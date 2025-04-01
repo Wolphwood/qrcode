@@ -4,6 +4,8 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
+import fs from 'fs'
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -15,4 +17,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
-})
+  server: {
+    allowedHosts: [
+      'e51be2e4466a09759beb275e0e148488.serveo.net'
+    ]
+  }
+});

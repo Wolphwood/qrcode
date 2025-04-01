@@ -27,3 +27,7 @@ npm run dev
 ```sh
 npm run build
 ```
+
+https://www.npmjs.com/package/qrcode.vue
+
+https://www.npmjs.com/package/vue-qrcode-reader

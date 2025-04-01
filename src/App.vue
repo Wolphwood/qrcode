@@ -1,85 +1,126 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <!-- <QrcodeStream @detect="onDetect"></QrcodeStream> -->
+  <div class="qr-container">
+    <div class="qr-video">
+      <qrcode-stream @detect="onDetect"></qrcode-stream>
     </div>
-  </header>
+  </div>
 
-  <RouterView />
+  <br/>
+
+  <n-space vertical>
+    <n-card size="small">
+      <div class="card-content">
+        <div class="icon">
+          <img src="https://vps.wolphwood.ovh/files/gamefest/discord/NANCY.png">
+        </div>
+        <span class="text">Template</span>
+      </div>
+    </n-card>
+    
+    <n-card size="small">
+      <div class="card-content">
+        <div class="icon">
+          <img src="https://vps.wolphwood.ovh/files/gamefest/discord/logo.png">
+        </div>
+        <span class="text">Je ne sais pas quoi écrire</span>
+      </div>
+    </n-card>
+    
+    <n-card size="small">
+      <div class="card-content">
+        <div class="icon">
+          <QuestionCircle/>
+        </div>
+        <span class="text">Pas encore découvert</span>
+      </div>
+    </n-card>
+  </n-space>
+
 </template>
 
+<script setup>
+  import { onMounted } from 'vue';  // Importation de onMounted
+  import { ref } from 'vue';
+
+  import { QuestionCircle } from "@vicons/fa"
+
+  import { QrcodeStream } from 'vue-qrcode-reader'
+
+
+  onMounted(() => {
+    for (let element of document.querySelectorAll('.n-card .icon > img')) {
+      const { width, height } = element;
+
+      element.addEventListener('load', () => {
+        if (width > height) {
+          element.classList.add("w");
+        } else {
+          element.classList.add("h");
+        }
+      });
+    }
+  });
+
+  function onDetect(detectedCodes) {
+    console.log('QR Code détecté:', detectedCodes[0].rawValue);
+  }
+</script>
+
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+  * {
+    --icon-size: 2rem;
+  }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+  .n-card {
+    color: var(--color-text);
+    border-color: var(--color-border);
+    background-color: var(--color-background-mute);
+  }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
+  .card-content {
     display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    align-items: center;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
+  .icon {
     display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    
+    width: var(--icon-size); height: var(--icon-size);
+
+    margin-right: 12px; /* Espace entre l'icône et le texte */
   }
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+  .icon > img {
+    object-fit: contain; /* Conserve les proportions sans déformation */
+    max-width: 100%;
+    max-height: 100%;
   }
-}
+
+  .text {
+    font-size: 16px; /* Ajustez la taille du texte si nécessaire */
+  }
+
+  .qr-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .qr-video {
+    width: 280px; /* Définir la largeur désirée */
+    height: 280px; /* Définir la hauteur désirée */
+    
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .qr-video video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+  }
 </style>
